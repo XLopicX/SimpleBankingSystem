@@ -12,18 +12,26 @@ public class AccountTest {
     }
     
     @Test
-    public void testDeposit() {
+    public void testWithdraw() {
         try {
             // Correcte
-            account.depositAmount(500);
-            assertEquals(1500, account.getBalance(), 0.001);
+            account.withdrawAmount(500.0);
+            assertEquals(500.0, account.getBalance(), 0.001);
             
-            // Error: Numeros negatius
+            // Error: numeros negatius
             try {
-                account.depositAmount(-100.0);
+                account.withdrawAmount(-100.0);
                 fail("S'esperava una excepció per quantitat negativa");
             } catch (Exception e) {
-                assertEquals("No es pot ingressar una quantitat negativa.", e.getMessage());
+                assertEquals("No es pot retirar una quantitat negativa.", e.getMessage());
+            }
+            
+            // Error: Falta de saldo
+            try {
+                account.withdrawAmount(1000.0);
+                fail("S'esperava una excepció per saldo insufficient");
+            } catch (Exception e) {
+                assertEquals("No hi ha suficient saldo", e.getMessage());
             }
         } catch (Exception e) {
             fail("No s'esperava cap excepció: " + e.getMessage());
